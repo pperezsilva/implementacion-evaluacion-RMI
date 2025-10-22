@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RPC Lab - Creador y Probador de Procedimientos Remotos</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>RPC Lab</h1>
+    <p>Crea e inicia pruebas de procedimientos remotos (gRPC, RMI, .NET Remoting)</p>
+  </header>
+
+  <main>
+    <section class="wizard">
+      <h2>Nuevo procedimiento</h2>
+      <form id="procForm">
+        <div class="row">
+          <label>Nombre
+            <input type="text" id="name" required placeholder="p.ej. sumar" />
+          </label>
+          <label>Descripción
+            <input type="text" id="description" placeholder="Opcional" />
+          </label>
+        </div>
+
+        <div class="row">
+          <label>Selector de llamadas remotas
+            <select id="framework" required></select>
+          </label>
+          <label>Protocolo
+            <select id="protocol" required></select>
+          </label>
+          <label>Método
+            <select id="method" required></select>
+          </label>
+        </div>
+
+        <fieldset>
+          <legend>Parámetros</legend>
+          <div id="paramsList"></div>
+          <div class="row">
+            <input type="text" id="paramName" placeholder="nombre" />
+            <select id="paramType">
+              <option value="string">string</option>
+              <option value="number">number</option>
+              <option value="boolean">boolean</option>
+            </select>
+            <label class="checkbox">
+              <input type="checkbox" id="paramRequired" checked /> requerido
+            </label>
+            <button type="button" id="addParam">Añadir parámetro</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Implementación</legend>
+          <p>Escribe una expresión o cuerpo que use <code>args</code>. Ej.: <code>return args.a + args.b;</code> o <code>({ suma: args.a + args.b })</code></p>
+          <textarea id="implementation" rows="6" placeholder="return args.a + args.b;"></textarea>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit">Guardar procedimiento</button>
+          <span id="saveMsg" class="msg"></span>
+        </div>
+      </form>
+    </section>
+
+    <section class="list">
+      <h2>Procedimientos</h2>
+      <div id="procedures"></div>
+    </section>
+  </main>
+
+  <template id="procCardTpl">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <strong class="title"></strong>
+          <div class="meta"></div>
+        </div>
+        <div class="card-actions">
+          <button class="invoke">Probar</button>
+          <button class="delete danger">Eliminar</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="description"></div>
+        <div class="params"></div>
+      </div>
+    </div>
+  </template>
+
+  <dialog id="invokeDialog">
+    <form method="dialog" id="invokeForm">
+      <h3>Invocar: <span id="invokeName"></span></h3>
+      <div id="invokeFields"></div>
+      <menu>
+        <button value="cancel">Cancelar</button>
+        <button id="invokeBtn" value="default">Invocar</button>
+      </menu>
+      <pre id="invokeResult" class="result"></pre>
+    </form>
+  </dialog>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
